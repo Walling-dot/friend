@@ -43,7 +43,7 @@ Life would be boring without you… so yeah, you’re stuck with me 💯`;
   const [aboutDisplay, setAboutDisplay] = useState("");
   const [aboutCharIndex, setAboutCharIndex] = useState(0);
 
-  // 🎵 Auto music on first tap
+  // 🎵 Auto music
   useEffect(() => {
     const startMusic = () => {
       if (audioRef.current && !isPlaying) {
@@ -95,6 +95,13 @@ Life would be boring without you… so yeah, you’re stuck with me 💯`;
     setTimeout(() => setPopup(null), 2000);
   };
 
+  // ❌ CLOSE ABOUT PANEL
+  const handleCloseAbout = () => {
+    setStartAbout(false);
+    setAboutDisplay("");
+    setAboutCharIndex(0);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center px-3">
 
@@ -116,10 +123,23 @@ Life would be boring without you… so yeah, you’re stuck with me 💯`;
         <source src="/music/I_Wanna_Be_Yours.mp3" />
       </audio>
 
-      {/* 💖 About Panel (Mobile Bottom Sheet) */}
+      {/* 💖 About Panel */}
       {startAbout && (
-        <div className="fixed bottom-0 left-0 w-full max-h-[45%] overflow-y-auto p-4 text-sm text-white bg-black/70 z-20 rounded-t-2xl">
-          {aboutDisplay}
+        <div className="fixed bottom-0 left-0 w-full max-h-[45%] overflow-y-auto p-4 text-sm text-white bg-black/80 z-20 rounded-t-2xl">
+
+          {/* ❌ Close Button */}
+          <button
+            onClick={handleCloseAbout}
+            className="absolute top-3 right-4 text-white text-lg"
+          >
+            ✖
+          </button>
+
+          {/* Content */}
+          <div className="mt-6">
+            {aboutDisplay}
+          </div>
+
         </div>
       )}
 
@@ -142,9 +162,29 @@ Life would be boring without you… so yeah, you’re stuck with me 💯`;
         {/* 🔘 Buttons */}
         <div className="grid grid-cols-2 gap-2">
           <button onClick={handleNext} className="btn">Next</button>
-          <button onClick={() => showPopup("You're one of the best 💯")} className="btn">Secret</button>
-          <button onClick={() => showPopup(roasts[Math.floor(Math.random()*roasts.length)])} className="btn">Roast</button>
-          <button onClick={() => showPopup(memories[Math.floor(Math.random()*memories.length)])} className="btn">Memory</button>
+
+          <button onClick={() => showPopup("You're one of the best 💯")} className="btn">
+            Secret
+          </button>
+
+          <button
+            onClick={() =>
+              showPopup(roasts[Math.floor(Math.random() * roasts.length)])
+            }
+            className="btn"
+          >
+            Roast
+          </button>
+
+          <button
+            onClick={() =>
+              showPopup(memories[Math.floor(Math.random() * memories.length)])
+            }
+            className="btn"
+          >
+            Memory
+          </button>
+
           <button
             onClick={() => {
               setStartAbout(true);
@@ -155,6 +195,7 @@ Life would be boring without you… so yeah, you’re stuck with me 💯`;
           >
             About You
           </button>
+
           <button onClick={() => setShowSlides(true)} className="btn col-span-2">
             Photos
           </button>
