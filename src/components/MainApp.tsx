@@ -43,7 +43,7 @@ Life would be boring without you… so yeah, you’re stuck with me 💯`;
   const [aboutDisplay, setAboutDisplay] = useState("");
   const [aboutCharIndex, setAboutCharIndex] = useState(0);
 
-  // 🎵 Auto music on first tap
+  // 🎵 Auto music
   useEffect(() => {
     const startMusic = () => {
       if (audioRef.current && !isPlaying) {
@@ -96,74 +96,106 @@ Life would be boring without you… so yeah, you’re stuck with me 💯`;
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-3">
+    <div className="min-h-screen flex flex-col bg-black text-white">
 
-      {/* 🎥 Background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="fixed inset-0 w-full h-full object-cover opacity-20 z-0"
-      >
-        <source src="/video.mp4" type="video/mp4" />
-      </video>
+      {/* 🎥 TOP VIDEO */}
+      <div className="w-full h-[30vh] relative">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="/video.mp4" type="video/mp4" />
+        </video>
 
-      <div className="fixed inset-0 bg-black/50 z-0"></div>
+        <div className="absolute inset-0 bg-black/40"></div>
+      </div>
 
-      {/* 🎵 Audio */}
+      {/* 🎵 AUDIO */}
       <audio ref={audioRef} loop>
         <source src="/music/I_Wanna_Be_Yours.mp3" />
       </audio>
 
-      {/* 💖 About Panel (Mobile Bottom Sheet) */}
+      {/* 💖 About Panel */}
       {startAbout && (
-        <div className="fixed bottom-0 left-0 w-full max-h-[45%] overflow-y-auto p-4 text-sm text-white bg-black/70 z-20 rounded-t-2xl">
+        <div className="fixed bottom-0 left-0 w-full max-h-[45%] overflow-y-auto p-4 text-sm bg-black/80 z-20 rounded-t-2xl">
           {aboutDisplay}
         </div>
       )}
 
-      {/* 🎯 Main Card */}
-      <div className="relative z-10 w-full max-w-sm bg-white/10 backdrop-blur-md rounded-2xl p-5 text-center space-y-4">
+      {/* 🎯 MAIN CONTENT */}
+      <div className="flex-1 flex items-center justify-center px-4 py-6">
 
-        <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-pink-400/30 mx-auto flex items-center justify-center text-3xl sm:text-5xl">
-          💖
-        </div>
+        <div className="w-full max-w-sm bg-white/10 backdrop-blur-md rounded-2xl p-5 text-center space-y-4">
 
-        <h2 className="text-lg sm:text-xl text-white font-semibold">
-          Rongsenienla Jamir 💖
-        </h2>
+          <div className="w-20 h-20 rounded-full bg-pink-400/30 mx-auto flex items-center justify-center text-3xl">
+            💖
+          </div>
 
-        <p className="text-sm sm:text-base text-white min-h-[1.5rem]">
-          {displayText}
-          <span className="animate-pulse">|</span>
-        </p>
+          <h2 className="text-lg font-semibold">
+            Rongsenienla Jamir 💖
+          </h2>
 
-        {/* 🔘 Buttons */}
-        <div className="grid grid-cols-2 gap-2">
-          <button onClick={handleNext} className="btn">Next</button>
-          <button onClick={() => showPopup("You're one of the best 💯")} className="btn">Secret</button>
-          <button onClick={() => showPopup(roasts[Math.floor(Math.random()*roasts.length)])} className="btn">Roast</button>
-          <button onClick={() => showPopup(memories[Math.floor(Math.random()*memories.length)])} className="btn">Memory</button>
-          <button
-            onClick={() => {
-              setStartAbout(true);
-              setAboutDisplay("");
-              setAboutCharIndex(0);
-            }}
-            className="btn col-span-2"
-          >
-            About You
-          </button>
-          <button onClick={() => setShowSlides(true)} className="btn col-span-2">
-            Photos
-          </button>
+          <p className="text-sm min-h-[1.5rem]">
+            {displayText}
+            <span className="animate-pulse">|</span>
+          </p>
+
+          {/* 🔘 Buttons */}
+          <div className="grid grid-cols-2 gap-2">
+            <button onClick={handleNext} className="btn">Next</button>
+
+            <button
+              onClick={() => showPopup("You're one of the best 💯")}
+              className="btn"
+            >
+              Secret
+            </button>
+
+            <button
+              onClick={() =>
+                showPopup(roasts[Math.floor(Math.random() * roasts.length)])
+              }
+              className="btn"
+            >
+              Roast
+            </button>
+
+            <button
+              onClick={() =>
+                showPopup(memories[Math.floor(Math.random() * memories.length)])
+              }
+              className="btn"
+            >
+              Memory
+            </button>
+
+            <button
+              onClick={() => {
+                setStartAbout(true);
+                setAboutDisplay("");
+                setAboutCharIndex(0);
+              }}
+              className="btn col-span-2"
+            >
+              About You
+            </button>
+
+            <button
+              onClick={() => setShowSlides(true)}
+              className="btn col-span-2"
+            >
+              Photos
+            </button>
+          </div>
         </div>
       </div>
 
       {/* 🔔 Popup */}
       {popup && (
-        <div className="fixed top-5 left-1/2 -translate-x-1/2 w-[90%] max-w-xs text-center bg-white/20 backdrop-blur-md px-4 py-2 rounded-xl text-sm text-white z-30">
+        <div className="fixed top-[32vh] left-1/2 -translate-x-1/2 w-[90%] max-w-xs text-center bg-white/20 backdrop-blur-md px-4 py-2 rounded-xl text-sm z-30">
           {popup}
         </div>
       )}
