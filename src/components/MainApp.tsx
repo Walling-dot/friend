@@ -128,7 +128,7 @@ And I guess that’s why… you’re stuck with me 💯`;
 
       {/* 🎵 AUDIO */}
       <audio ref={audioRef} loop>
-        <source src="/music.mp3/I_Wanna_Be_Yours.mp3" type="audio/mpeg" />
+        <source src="/music/I_Wanna_Be_Yours.mp3" type="audio/mpeg" />
       </audio>
 
       {/* 🌟 LEFT SIDE TEXT */}
