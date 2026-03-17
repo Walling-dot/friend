@@ -28,38 +28,33 @@ const MainApp = () => {
   const [showSlides, setShowSlides] = useState(false);
   const [popup, setPopup] = useState<string | null>(null);
 
-  // 🎵 MUSIC
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // 💖 ABOUT YOU TEXT (LONG)
   const aboutText = `You are one of those rare people who makes everything feel lighter and easier without even trying. 
 From random laughs to complete chaos, every moment somehow turns into a memory when you're around. 
 You're annoying sometimes, unpredictable most of the time, but that's exactly what makes you so special. 
 No matter how weird or random things get, you always manage to make them fun. 
 
-You’re not just a friend, you’re someone I can always count on, someone who understands without needing explanations. 
-Even the simplest moments feel better with you in them. 
-Honestly, life would be way too quiet, way too boring, and way too normal without you in it. 
-And I guess that’s why… you’re stuck with me 💯`;
+You’re not just a friend, you’re someone I can always count on. 
+Life would be boring without you… so yeah, you’re stuck with me 💯`;
 
   const [startAbout, setStartAbout] = useState(false);
   const [aboutDisplay, setAboutDisplay] = useState("");
   const [aboutCharIndex, setAboutCharIndex] = useState(0);
 
-  // 🎵 Auto play music
+  // 🎵 Auto music on first tap
   useEffect(() => {
     const startMusic = () => {
       if (audioRef.current && !isPlaying) {
         audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
       }
     };
-
     document.addEventListener("click", startMusic);
     return () => document.removeEventListener("click", startMusic);
   }, [isPlaying]);
 
-  // ⌨️ Typewriter (center text)
+  // ⌨️ Typewriter
   useEffect(() => {
     if (charIndex < messages[msgIndex].length) {
       const timeout = setTimeout(() => {
@@ -70,7 +65,7 @@ And I guess that’s why… you’re stuck with me 💯`;
     }
   }, [charIndex, msgIndex]);
 
-  // 💖 LETTER-BY-LETTER (About You)
+  // 💖 About typing
   useEffect(() => {
     if (!startAbout) return;
 
@@ -78,13 +73,11 @@ And I guess that’s why… you’re stuck with me 💯`;
       const timeout = setTimeout(() => {
         setAboutDisplay((prev) => prev + aboutText[aboutCharIndex]);
         setAboutCharIndex((i) => i + 1);
-      }, 400); // 🐢 slow typing
-
+      }, 25);
       return () => clearTimeout(timeout);
     }
   }, [aboutCharIndex, startAbout]);
 
-  // 🔊 Volume
   useEffect(() => {
     if (audioRef.current) audioRef.current.volume = 0.5;
   }, []);
@@ -99,93 +92,78 @@ And I guess that’s why… you’re stuck with me 💯`;
 
   const showPopup = (text: string) => {
     setPopup(text);
-    setTimeout(() => setPopup(null), 2500);
+    setTimeout(() => setPopup(null), 2000);
   };
 
-  const handleSecret = () =>
-    showPopup("You're one of the best people I have 💯");
-
-  const handleRoast = () =>
-    showPopup(roasts[Math.floor(Math.random() * roasts.length)]);
-
-  const handleMemory = () =>
-    showPopup(memories[Math.floor(Math.random() * memories.length)]);
-
   return (
-    <>
-      {/* 🎥 BACKGROUND VIDEO */}
+    <div className="min-h-screen flex items-center justify-center px-3">
+
+      {/* 🎥 Background */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        className="fixed inset-0 w-full h-full object-cover z-0 opacity-20 blur-sm"
+        className="fixed inset-0 w-full h-full object-cover opacity-20 z-0"
       >
         <source src="/video.mp4" type="video/mp4" />
       </video>
 
-      <div className="fixed inset-0 bg-black/40 z-0"></div>
+      <div className="fixed inset-0 bg-black/50 z-0"></div>
 
-      {/* 🎵 AUDIO */}
+      {/* 🎵 Audio */}
       <audio ref={audioRef} loop>
-        <source src="/music/I_Wanna_Be_Yours.mp3" type="audio/mpeg" />
+        <source src="/music/I_Wanna_Be_Yours.mp3" />
       </audio>
 
-      {/* 🌟 LEFT SIDE TEXT */}
+      {/* 💖 About Panel (Mobile Bottom Sheet) */}
       {startAbout && (
-        <div className="fixed left-10 top-1/2 -translate-y-1/2 w-[400px] text-left text-primary-foreground text-lg leading-loose z-10">
+        <div className="fixed bottom-0 left-0 w-full max-h-[45%] overflow-y-auto p-4 text-sm text-white bg-black/70 z-20 rounded-t-2xl">
           {aboutDisplay}
-          <span className="animate-pulse">|</span>
         </div>
       )}
 
-      {/* 🎯 MAIN CARD */}
-      <div className="fixed inset-0 flex items-center justify-center z-10">
-        <div className="glass rounded-2xl p-6 w-[340px] text-center space-y-4">
-          <div className="w-28 h-28 rounded-full bg-primary/30 mx-auto flex items-center justify-center text-5xl">
-            💖
-          </div>
+      {/* 🎯 Main Card */}
+      <div className="relative z-10 w-full max-w-sm bg-white/10 backdrop-blur-md rounded-2xl p-5 text-center space-y-4">
 
-          <h2 className="text-xl font-semibold text-primary-foreground">
-            Rongsenienla Jamir 💖
-          </h2>
+        <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-pink-400/30 mx-auto flex items-center justify-center text-3xl sm:text-5xl">
+          💖
+        </div>
 
-          <p className="text-primary-foreground/90 min-h-[1.5rem]">
-            {displayText}
-            <span className="animate-pulse">|</span>
-          </p>
+        <h2 className="text-lg sm:text-xl text-white font-semibold">
+          Rongsenienla Jamir 💖
+        </h2>
 
-          <div className="flex flex-wrap justify-center gap-2">
-            {[
-              { label: "Next", onClick: handleNext },
-              { label: "Secret", onClick: handleSecret },
-              { label: "Roast", onClick: handleRoast },
-              { label: "Memory", onClick: handleMemory },
-              {
-                label: "About You",
-                onClick: () => {
-                  setStartAbout(true);
-                  setAboutDisplay("");
-                  setAboutCharIndex(0);
-                },
-              },
-              { label: "Photos", onClick: () => setShowSlides(true) },
-            ].map((btn) => (
-              <button
-                key={btn.label}
-                className="px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition"
-                onClick={btn.onClick}
-              >
-                {btn.label}
-              </button>
-            ))}
-          </div>
+        <p className="text-sm sm:text-base text-white min-h-[1.5rem]">
+          {displayText}
+          <span className="animate-pulse">|</span>
+        </p>
+
+        {/* 🔘 Buttons */}
+        <div className="grid grid-cols-2 gap-2">
+          <button onClick={handleNext} className="btn">Next</button>
+          <button onClick={() => showPopup("You're one of the best 💯")} className="btn">Secret</button>
+          <button onClick={() => showPopup(roasts[Math.floor(Math.random()*roasts.length)])} className="btn">Roast</button>
+          <button onClick={() => showPopup(memories[Math.floor(Math.random()*memories.length)])} className="btn">Memory</button>
+          <button
+            onClick={() => {
+              setStartAbout(true);
+              setAboutDisplay("");
+              setAboutCharIndex(0);
+            }}
+            className="btn col-span-2"
+          >
+            About You
+          </button>
+          <button onClick={() => setShowSlides(true)} className="btn col-span-2">
+            Photos
+          </button>
         </div>
       </div>
 
-      {/* 🔔 POPUP */}
+      {/* 🔔 Popup */}
       {popup && (
-        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-40 glass px-6 py-3 rounded-xl text-sm animate-pulse">
+        <div className="fixed top-5 left-1/2 -translate-x-1/2 w-[90%] max-w-xs text-center bg-white/20 backdrop-blur-md px-4 py-2 rounded-xl text-sm text-white z-30">
           {popup}
         </div>
       )}
@@ -193,7 +171,7 @@ And I guess that’s why… you’re stuck with me 💯`;
       {showSlides && (
         <SlideshowOverlay onClose={() => setShowSlides(false)} />
       )}
-    </>
+    </div>
   );
 };
 

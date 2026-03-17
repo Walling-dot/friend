@@ -4,61 +4,93 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 🌈 THEME */
 @layer base {
   :root {
     --background: 340 60% 50%;
     --foreground: 0 0% 100%;
     --card: 0 0% 0% / 0.5;
     --card-foreground: 0 0% 100%;
-    --popover: 0 0% 0%;
-    --popover-foreground: 0 0% 100%;
     --primary: 350 80% 65%;
     --primary-foreground: 0 0% 100%;
     --secondary: 350 50% 75%;
     --secondary-foreground: 0 0% 100%;
     --muted: 0 0% 100% / 0.15;
     --muted-foreground: 0 0% 80%;
-    --accent: 165 100% 50%;
-    --accent-foreground: 0 0% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
     --border: 0 0% 100% / 0.2;
     --input: 0 0% 100% / 0.2;
     --ring: 350 80% 65%;
     --radius: 1rem;
-    --sidebar-background: 0 0% 0%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 350 80% 65%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 100% / 0.1;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 100% / 0.1;
-    --sidebar-ring: 350 80% 65%;
 
     --gradient-romantic: linear-gradient(135deg, hsl(351, 57%, 89%), hsl(20, 90%, 75%));
     --gradient-dark: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.9));
   }
 }
 
+/* 🌍 BASE */
 @layer base {
   * {
     @apply border-border;
   }
+
+  html, body {
+    height: 100%;
+  }
+
   body {
     font-family: 'Poppins', sans-serif;
     @apply bg-background text-foreground;
-    overflow: hidden;
+
+    /* ✅ FIX: allow scrolling on mobile */
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    /* smoother touch scrolling */
+    -webkit-overflow-scrolling: touch;
   }
 }
 
-@layer utilities {
+/* ✨ COMPONENTS */
+@layer components {
   .glass {
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(16px);
     background: rgba(0, 0, 0, 0.5);
+    border-radius: var(--radius);
+  }
+
+  /* 📱 Better mobile buttons */
+  .btn {
+    @apply px-4 py-2 rounded-full text-sm font-medium transition;
+    background: rgba(255, 105, 180, 0.85);
+    color: white;
+  }
+
+  .btn:active {
+    transform: scale(0.95);
   }
 }
 
+/* 🧰 UTILITIES */
+@layer utilities {
+  /* Hide scrollbar (mobile friendly) */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* 🎬 ANIMATIONS */
 @keyframes float-up {
-  0% { transform: translateY(100vh); opacity: 1; }
-  100% { transform: translateY(-10vh); opacity: 0; }
+  0% {
+    transform: translateY(100vh);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10vh);
+    opacity: 0;
+  }
 }
